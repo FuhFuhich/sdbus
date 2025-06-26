@@ -12,4 +12,5 @@ echo '{"Timeout":2000,"TimeoutPhrase":"Initial phrase"}' > ~/com.system.configur
 
 ## Запустите сервер в первом окне
 ## Запуск клиента во втором окне
-## В окне с сервисом вписать команду <gdbus send -e -d com.system.configurationManager -o com.system.configurationManager.Application.confManagerApplication1 -m com.system.configurationManager.Application.ChangeConfiguration "TimeoutPhrase" "s Please stop me"> (пока что не работает)
+## В окне с сервисом вписать команду (пока не работает)
+<gdbus send -e -d com.system.configurationManager -o com.system.configurationManager.Application.confManagerApplication1 -m com.system.configurationManager.Application.ChangeConfiguration "TimeoutPhrase" "s Please stop me">
