@@ -14,10 +14,8 @@ void print_loop()
 {
     while (true)
     {
-        {
-            std::lock_guard<std::mutex> lock(phrase_mutex);
-            std::cout << phrase << "\n";
-        }
+        std::lock_guard<std::mutex> lock(phrase_mutex);
+        std::cout << phrase << "\n";
         
         std::this_thread::sleep_for(std::chrono::milliseconds(timeout_ms));
     }
@@ -26,12 +24,14 @@ void print_loop()
 int main()
 {
     auto connection = sdbus::createSessionBusConnection();
-    std::string objectPath = "/com/system/configurationManager/Application/confManagerApplication1";
+    std::string object_path = "/com/system/configurationManager/Application/confManagerApplication1";
     std::string interface = "com.system.configurationManager.Application.Configuration";
-    auto proxy = sdbus::createProxy(*connection, "com.system.configurationManager", objectPath);
+    auto proxy = sdbus::createProxy(*connection, "com.system.configurationManager", object_path);
     
     std::map<std::string, sdbus::Variant> config;
-    proxy->callMethod("GetConfiguration").storeResultsTo(config);
+    proxy->callMethod("GetConfiguration")
+	.onInterface(interface)
+	.storeResultsTo(config);
     
     if (config.count("Timeout"))
     {
@@ -44,15 +44,15 @@ int main()
     
     proxy->uponSignal("configurationChanged")
         .onInterface(interface)
-        .call([](const std::map<std::string, sdbus::Variant>& newConfig) {
-        if (newConfig.count("Timeout")) 
+        .call([](const std::map<std::string, sdbus::Variant>& new_config) {
+        if (new_config.count("Timeout")) 
         {
-            timeout_ms = newConfig.at("Timeout").get<int32_t>();
+            timeout_ms = new_config.at("Timeout").get<int32_t>();
         }
-        if (newConfig.count("TimeoutPhrase")) 
+        if (new_config.count("TimeoutPhrase")) 
         {
             std::lock_guard<std::mutex> lock(phrase_mutex);
-            phrase = newConfig.at("TimeoutPhrase").get<std::string>();
+            phrase = new_config.at("TimeoutPhrase").get<std::string>();
         }
             });
     proxy->finishRegistration();

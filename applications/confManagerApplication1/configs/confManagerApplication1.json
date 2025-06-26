@@ -1,4 +1,4 @@
 {
-    "Timeout": 1000,
+    "Timeout": 10000,
     "TimeoutPhrase": "Nya"
 }
