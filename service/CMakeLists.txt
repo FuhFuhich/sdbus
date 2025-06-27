@@ -1,2 +1,2 @@
-add_executable(configurationManager server.cpp)
-target_link_libraries(configurationManager PRIVATE sdbus-c++)
+add_executable(server server.cpp)
+target_link_libraries(server PRIVATE sdbus-c++)

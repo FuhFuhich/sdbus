@@ -37,10 +37,14 @@ echo '{"Timeout":2000,"TimeoutPhrase":"Initial phrase"}' > ~/com.system.configur
 
 ## Запустите сервер в первом окне
 ``` console
+cd server
 ./server
 ```
 ## Запустите клиент во втором окне
 ```console
+cd ..
+cd applications
+cd confManagerApplication1
 ./client
 ```
 ## После откройте 3 окно и введите одну из команд. Первая команда на изменение фразы:
