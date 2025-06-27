@@ -54,6 +54,7 @@ class AppConfig {
         object_->emitSignal("configurationChanged")
             .onInterface("com.system.configurationManager.Application.Configuration")
             .withArguments(config_);
+        std::cout << "emit\n";
     }
 
    private:

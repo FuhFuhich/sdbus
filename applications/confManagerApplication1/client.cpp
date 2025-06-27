@@ -8,14 +8,18 @@
 #include <thread>
 
 std::atomic<int> timeout_ms{2000};
+std::atomic<bool> phrase_updated{false};
 std::string phrase = "Hello from nya1!";
-std::mutex phrase_mutex;
+std::string new_phrase;
 
 void print_loop() {
     while (true) {
-        std::lock_guard<std::mutex> lock(phrase_mutex);
-        std::cout << phrase << "\n";
+        if (phrase_updated) {
+            phrase = new_phrase;
+            phrase_updated = false;
+        }
 
+        std::cout << phrase << "\n";
         std::this_thread::sleep_for(std::chrono::milliseconds(timeout_ms));
     }
 }
@@ -43,8 +47,8 @@ int main() {
                 timeout_ms = new_config.at("Timeout").get<int32_t>();
             }
             if (new_config.count("TimeoutPhrase")) {
-                std::lock_guard<std::mutex> lock(phrase_mutex);
-                phrase = new_config.at("TimeoutPhrase").get<std::string>();
+                new_phrase = new_config.at("TimeoutPhrase").get<std::string>();
+                phrase_updated = true;
             }
         });
     proxy->finishRegistration();
