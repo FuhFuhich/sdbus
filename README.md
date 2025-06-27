@@ -37,7 +37,7 @@ echo '{"Timeout":2000,"TimeoutPhrase":"Initial phrase"}' > ~/com.system.configur
 
 ## Запустите сервер в первом окне
 ``` console
-cd server
+cd service
 ./server
 ```
 ## Запустите клиент во втором окне
