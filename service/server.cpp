@@ -42,6 +42,7 @@ class AppConfig {
         if (config_.count(key) == 0) {
             throw sdbus::Error("com.system.configurationManager.Error", "Unknown configuration key");
         }
+
         config_[key] = value;
         saveConfigToFile();
         emitConfigurationChanged();
@@ -58,6 +59,7 @@ class AppConfig {
    private:
     void saveConfigToFile() {
         nlohmann::json j;
+
         for (const auto& [key, val] : config_) {
             try {
                 j[key] = val.get<int32_t>();
@@ -66,7 +68,10 @@ class AppConfig {
             }
         }
         std::ofstream f(config_path_);
+
         f << j.dump(4);
+
+        std::cout << "new config file\n";
     }
 };
 
